@@ -27,6 +27,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Optimize logo
+        run: npm install sharp --no-save && node scripts/optimize-logo.mjs
+
       - name: Build
         run: npm run build
         env:
@@ -35,7 +38,7 @@ jobs:
           VITE_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiZG95b3RhaGdwZmplY2Rod2lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwODg2MDksImV4cCI6MjA5NzY2NDYwOX0.XAkULirvPB3y5zsXRLtf4IaTNt12og4MirgZ4jsaHHk
 
       - name: SPA fallback (GitHub Pages)
-        run: cp out/index.html out/404.html
+        run: node scripts/spa-fallback.mjs
 
       - uses: actions/upload-pages-artifact@v3
         with:

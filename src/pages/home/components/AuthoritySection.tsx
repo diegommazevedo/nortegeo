@@ -84,7 +84,7 @@ export default function AuthoritySection() {
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
                   style={{ fontFamily: F.label, backgroundColor: C.whatsapp }}
                 >

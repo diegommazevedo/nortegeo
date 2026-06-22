@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Copy, CheckCircle2, Database, UserCheck } from "lucide-react";
+import { asset } from "@/lib/brand";
 
 const SUPABASE_URL = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
 const ANON_KEY = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
-
-import { ADMIN_EMAIL, ADMIN_PASSWORD } from "@/painel/lib/credentials";
-import { asset } from "@/lib/brand";
+const ADMIN_EMAIL = "admin7@nortegeo.com.br";
+const ADMIN_PASSWORD = "admin7";
 
 async function callFn(name: string, body: Record<string, unknown>) {
   const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
@@ -78,7 +78,7 @@ export default function SetupPage() {
               <a
                 href="https://supabase.com/dashboard/project/hbdoyotahgpfjecdhwio/sql/new"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="text-emerald-400 underline"
               >
                 SQL Editor

@@ -3,7 +3,6 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { usePainelAuth, getDefaultPainelPath } from "@/painel/hooks/usePainelAuth";
 import { GuestGuard } from "@/painel/components/AuthGuard";
-import { ADMIN_EMAIL, ADMIN_PASSWORD } from "@/painel/lib/credentials";
 import { asset } from "@/lib/brand";
 
 export default function LoginPage() {
@@ -20,8 +19,8 @@ function LoginForm() {
   const location = useLocation();
   const from = (location.state as { from?: string })?.from;
 
-  const [email, setEmail] = useState(ADMIN_EMAIL);
-  const [password, setPassword] = useState(ADMIN_PASSWORD);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 

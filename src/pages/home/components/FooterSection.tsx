@@ -126,7 +126,7 @@ function LeadForm() {
               </button>
               <p className="mt-3 text-center text-xs" style={{ fontFamily: F.body, color: C.muted }}>
                 Ou fale agora:{" "}
-                <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="font-semibold" style={{ color: C.brand }}>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="font-semibold" style={{ color: C.brand }}>
                   {WHATSAPP_DISPLAY}
                 </a>
               </p>
@@ -174,7 +174,7 @@ export function FooterSection() {
                     <a
                       href={href}
                       target={href.startsWith("http") ? "_blank" : undefined}
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="text-sm transition hover:text-white"
                       style={{ fontFamily: F.body, color: "rgba(255,255,255,.6)" }}
                     >

@@ -70,7 +70,7 @@ export default function HeroSection() {
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="group inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-7 text-sm font-semibold text-white transition hover:opacity-90 active:scale-[.98]"
                 style={{
                   fontFamily: F.label,

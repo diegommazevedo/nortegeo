@@ -31,7 +31,7 @@ export default function ClientPortalPage() {
           <a
             href={WHATSAPP_URL}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white"
           >
             <MessageCircle size={16} />
@@ -98,7 +98,7 @@ export default function ClientPortalPage() {
           <a
             href={WHATSAPP_URL}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="mt-10 flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
           >
             <MessageCircle size={18} />

@@ -55,7 +55,7 @@ export default function Navbar() {
           <a
             href={WHATSAPP_URL}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="ml-3 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             style={{
               fontFamily: F.label,
@@ -101,7 +101,7 @@ export default function Navbar() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="mt-2 rounded-xl py-3.5 text-center text-sm font-semibold text-white"
               style={{ backgroundColor: C.whatsapp }}
               onClick={() => setOpen(false)}
