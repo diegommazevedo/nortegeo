@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { navLinks, WHATSAPP_URL } from "@/content/home";
-import { C, F } from "@/lib/brand";
+import { C, F, asset } from "@/lib/brand";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,7 +32,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 lg:px-8">
         <a href="#" className="flex items-center gap-2.5">
           <img
-            src="/assets/logo.png"
+            src={asset("assets/logo.png")}
             alt="NorteGeo"
             className="h-10 w-auto rounded-lg bg-white px-2 py-1"
           />

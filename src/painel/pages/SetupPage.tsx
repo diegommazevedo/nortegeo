@@ -6,6 +6,7 @@ const SUPABASE_URL = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
 const ANON_KEY = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
 
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from "@/painel/lib/credentials";
+import { asset } from "@/lib/brand";
 
 async function callFn(name: string, body: Record<string, unknown>) {
   const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
@@ -66,7 +67,7 @@ export default function SetupPage() {
   return (
     <div className="min-h-screen bg-slate-950 px-4 py-12 text-white">
       <div className="mx-auto max-w-2xl">
-        <img src="/assets/logo.png" alt="NorteGeo" className="h-12 rounded-lg bg-white px-2 py-1" />
+        <img src={asset("assets/logo.png")} alt="NorteGeo" className="h-12 rounded-lg bg-white px-2 py-1" />
         <h1 className="mt-6 text-2xl font-bold">Setup NorteGeo SaaS</h1>
         <p className="mt-2 text-sm text-slate-400">Configure o banco e o usuário admin</p>
 

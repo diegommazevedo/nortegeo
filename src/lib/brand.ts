@@ -34,3 +34,9 @@ export const gradient = {
   mesh:  "radial-gradient(ellipse 80% 60% at 20% 40%, rgba(5,150,105,.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 20%, rgba(37,99,235,.12) 0%, transparent 55%)",
   text:  "linear-gradient(135deg, #34D399 0%, #059669 50%, #2563EB 100%)",
 } as const;
+
+/** Caminho de asset público respeitando BASE_PATH (GitHub Pages, etc.) */
+export function asset(path: string): string {
+  const clean = path.replace(/^\//, "");
+  return `${import.meta.env.BASE_URL}${clean}`;
+}

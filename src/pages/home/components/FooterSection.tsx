@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { formQuestions, WHATSAPP_URL, WHATSAPP_DISPLAY, EMAIL } from "@/content/home";
 import { Reveal, Badge } from "@/components/EditorialHeading";
-import { C, F, gradient } from "@/lib/brand";
+import { C, F, gradient, asset } from "@/lib/brand";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 type FormState = {
@@ -153,7 +153,7 @@ export function FooterSection() {
         <div className="grid gap-12 lg:grid-cols-[1fr_480px] lg:gap-16">
           <div>
             <img
-              src="/assets/logo.png"
+              src={asset("assets/logo.png")}
               alt="NorteGeo"
               className="h-12 w-auto rounded-lg bg-white px-2 py-1"
             />

@@ -1,7 +1,7 @@
 import { ChevronRight, ArrowDown, MapPin, Shield, Zap } from "lucide-react";
 import { heroBadges, WHATSAPP_URL, stats } from "@/content/home";
 import { Reveal } from "@/components/EditorialHeading";
-import { C, F, gradient } from "@/lib/brand";
+import { C, F, gradient, asset } from "@/lib/brand";
 
 export default function HeroSection() {
   return (
@@ -21,7 +21,7 @@ export default function HeroSection() {
           style={{ boxShadow: "0 32px 64px rgba(0,0,0,.4)" }}
         >
           <img
-            src="/assets/hero-banner.png"
+            src={asset("assets/hero-banner.png")}
             alt="Equipe NorteGeo em campo"
             className="h-full w-full object-cover"
           />
@@ -139,7 +139,7 @@ export default function HeroSection() {
       {/* Mobile banner */}
       <div className="relative mx-5 mb-8 overflow-hidden rounded-2xl lg:hidden">
         <img
-          src="/assets/hero-banner.png"
+          src={asset("assets/hero-banner.png")}
           alt="Equipe NorteGeo"
           className="aspect-[16/10] w-full object-cover"
         />

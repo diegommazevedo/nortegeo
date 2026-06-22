@@ -1,6 +1,6 @@
 import { authorityPoints, WHATSAPP_URL } from "@/content/home";
 import { Reveal, SectionTitle } from "@/components/EditorialHeading";
-import { C, F } from "@/lib/brand";
+import { C, F, asset } from "@/lib/brand";
 import { GraduationCap, Scale, ArrowRight } from "lucide-react";
 
 const icons = [GraduationCap, Scale];
@@ -14,7 +14,7 @@ export default function AuthoritySection() {
             <div className="relative">
               <div className="overflow-hidden rounded-3xl" style={{ boxShadow: "0 24px 48px rgba(0,0,0,.12)" }}>
                 <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
+                  src={asset("assets/socrates.png")}
                   alt="Sócrates Souza — Diretor Técnico NorteGeo"
                   className="aspect-[4/5] w-full object-cover object-top"
                   loading="lazy"

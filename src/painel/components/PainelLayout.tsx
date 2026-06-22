@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { usePainelAuth } from "@/painel/hooks/usePainelAuth";
+import { asset } from "@/lib/brand";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard };
 
@@ -104,7 +105,7 @@ export function PainelLayout({ nav = providerNav, title = "NorteGeo SaaS" }: {
       >
         <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5">
           <div>
-            <img src="/assets/logo.png" alt="NorteGeo" className="h-9 w-auto" />
+            <img src={asset("assets/logo.png")} alt="NorteGeo" className="h-9 w-auto" />
             <p className="mt-2 text-xs font-semibold text-slate-500">{title}</p>
           </div>
           <button

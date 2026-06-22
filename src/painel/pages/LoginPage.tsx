@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { usePainelAuth, getDefaultPainelPath } from "@/painel/hooks/usePainelAuth";
 import { GuestGuard } from "@/painel/components/AuthGuard";
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from "@/painel/lib/credentials";
+import { asset } from "@/lib/brand";
 
 export default function LoginPage() {
   return (
@@ -42,7 +43,7 @@ function LoginForm() {
     <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4">
       <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
         <div className="mb-8 text-center">
-          <img src="/assets/logo.png" alt="NorteGeo" className="mx-auto h-12 rounded-lg bg-white px-2 py-1" />
+          <img src={asset("assets/logo.png")} alt="NorteGeo" className="mx-auto h-12 rounded-lg bg-white px-2 py-1" />
           <h1 className="mt-4 text-xl font-bold text-white">Área restrita</h1>
           <p className="mt-1 text-sm text-slate-400">Painel NorteGeo SaaS</p>
         </div>
