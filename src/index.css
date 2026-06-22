@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  body {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  input, select, textarea { font-size: 16px; }
+  @media (min-width: 640px) {
+    input, select, textarea { font-size: 0.875rem; }
+  }
+}
+
+/* ── Scroll-reveal ─────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Topography grid pattern ───────────────────────────── */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(5,150,105,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5,150,105,.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.grid-pattern-dark {
+  background-image:
+    linear-gradient(rgba(52,211,153,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52,211,153,.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Gradient text ─────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #34D399 0%, #059669 50%, #2563EB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glass card ────────────────────────────────────────── */
+.glass {
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.12);
+}
+.glass-light {
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(226,232,240,.8);
+}
+
+/* ── Selection / scrollbar ─────────────────────────────── */
+::selection { background: #34D399; color: #040B14; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: #059669; border-radius: 3px; }

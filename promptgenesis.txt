@@ -1,0 +1,272 @@
+# Prompt Técnico — NorteGeo SaaS
+
+## 1. Visão Geral
+
+O **NorteGeo SaaS** é o painel de gestão interna da NorteGeo Engenharia e Topografia, uma empresa de serviços de topografia, georreferenciamento e regularização fundiária localizada em Braço do Rio, Conceição da Barra - ES, Brasil.
+
+O sistema é um **SaaS multi-tenant** que permite ao provedor (Sócrates Souza) gerenciar projetos técnicos, lançar despesas, calcular precificação, emitir propostas PDF, e acompanhar o progresso de cada projeto. Os clientes têm um portal próprio para acompanhar seus projetos e baixar documentos.
+
+---
+
+## 2. Arquitetura Geral
+
+```
+Frontend (React + Vite + TailwindCSS + TypeScript)
+├── Site institucional (/) — One-page SEO
+└── Painel SaaS (/painel/*)
+    ├── Login/Registro
+    ├── Provedor (/painel/provider)
+    ├── Cliente (/painel/client)
+    └── Admin (/painel/admin)
+
+Backend (Supabase)
+├── Auth (Supabase Auth)
+├── PostgreSQL (tabelas com RLS)
+├── Storage (upload de arquivos)
+└── Edge Functions (Deno)
+```
+
+---
+
+## 3. Autenticação & Papéis
+
+- **Supabase Auth** com JWT para sessões
+- **Tabela `profiles`**: extende `auth.users` com `role`, `name`, `cpf`, `phone`, `organization_id`
+- **Papéis**:
+  - `provider`: executa projetos (Sócrates)
+  - `client`: visualiza seus projetos (proprietários rurais)
+- **Admin detection**: `role === 'provider' && !organization_id` → acesso total ao admin de licenças
+- **AuthGuard**: redireciona usuários sem acesso a páginas incorretas
+
+---
+
+## 4. Modelo de Dados (Supabase)
+
+### Tabelas
+
+| Tabela | Descrição | RLS |
+|---|---|---|
+| `auth.users` | Usuários autenticados (Supabase) | — |
+| `profiles` | Perfil estendido (role, name, org) | ✅ |
+| `organizations` | Licenças/workspaces (multi-tenant) | ✅ |
+| `organization_members` | Membros vinculados a organizações | ✅ |
+| `cost_parameters` | Variáveis de custo (diária, km, etc.) | ✅ |
+| `projects` | Projetos principais | ✅ |
+| `project_stages` | Etapas de cada projeto | ✅ |
+| `project_expenses` | Despesas lançadas por projeto | ✅ |
+| `project_deliverables` | Documentos entregáveis | ✅ |
+
+### RLS (Row Level Security)
+
+- Todos os dados são filtrados por `organization_id` (quando existente)
+- O provedor raiz (`provider` sem `organization_id`) vê todas as organizações
+- Clientes só veem projetos onde `client_id` ou `client_profile_id` correspondem ao seu ID
+- Não existe `organization_id` como FK direta em `auth.users` — a relação passa por `profiles.organization_id`
+
+---
+
+## 5. Funcionalidades Implementadas
+
+### 5.1 Site Institucional (`/`)
+- **One-page SEO** com 10 seções: Hero, Problema, Stats, Soluções, Processo, Depoimentos, Autoridade, FAQ, CTA, Formulário
+- **Paleta**: creme/olive/terracotta/espresso (editorial premium)
+- **Tipografia**: Playfair Display + Inter
+- **SEO local**: Conceição da Barra, Braço do Rio, ES
+- **Links WhatsApp**: `+55 27 99749-9587`
+- **Formulário de leads** via Readdy Forms
+
+### 5.2 Painel de Login (`/painel`)
+- Login com email/senha (Supabase Auth)
+- Cadastro de novos usuários (cliente ou provedor)
+- Redirecionamento automático baseado no `role` do profile
+
+### 5.3 Kanban de Projetos (`/painel/provider`)
+- **6 colunas**: Prospecção, Análise, Levantamento, Execução, Finalização, Concluído
+- **Drag & Drop**: `@dnd-kit` para mover cards entre colunas
+- **Cards**: exibem nome, cliente, progresso, tipo de serviço
+- **Estatísticas**: projetos ativos, progresso médio, receita total, ROI da carteira
+- **Cálculo de progresso**: `Σ (peso da etapa × % conclusão)` — baseado em pesos reais
+
+### 5.4 Novo Projeto — Wizard de 3 Passos
+- **Passo 1**: Selecionar tipo de serviço (5 templates pré-cadastrados)
+- **Passo 2**: Selecionar cliente existente ou cadastrar novo
+- **Passo 3**: Configurar parâmetros técnicos (dias, distância, equipe, preço, taxas)
+- **Templates**:
+  - Georreferenciamento INCRA
+  - Desmembramento/Unificação
+  - Regularização Fundiária
+  - Levantamento Planialtimétrico
+  - Retificação de Área
+- **Auto-inicialização**: a primeira etapa é colocada em `in_progress`, demais em `pending`
+
+### 5.5 Modal de Projeto (2 Tabs)
+
+#### Tab 1 — Cronograma & Operações
+- **Timeline visual**: etapas com pesos, datas, status, barras de progresso
+- **Edição de status**: `pending`, `in_progress`, `completed`, `blocked`
+- **Auto-datas**: ao marcar `completed`, preenche `actualEndDate`; ao marcar `in_progress`, preenche `actualStartDate`
+- **Upload de arquivos**: placeholder para RINEX, dados brutos, fotos
+- **Notas de campo**: textarea com 500 chars max
+
+#### Tab 2 — Financeiro
+- **Métricas**: preço contrato, custo operacional, ROI, custo estimado
+- **Previsto vs Realizado**: comparação custo etapas × despesas lançadas
+- **Lançamento de despesas**: categoria (campo, deslocamento, terceiros, proposta, imprevisto) + descrição + valor
+- **Tabela CRUD**: adicionar, editar, excluir despesas
+- **Total de despesas**: calculado dinamicamente
+
+### 5.6 Motor de Precificação (`/painel/provider/precificacao`)
+- **Input**: dias de ajudante, equipe, dias de campo, distância, ART, cartório, taxa, lucro alvo
+- **Cálculo**: custo diária, custo km, imposto, custo total, preço sugerido, ROI
+- **Link**: vincula precificação a projeto existente e registra como despesa
+- **PDF**: gera proposta comercial (jsPDF + autoTable)
+
+### 5.7 Parâmetros de Custo (`/painel/provider/parametros`)
+- **CRUD** de variáveis de custo (diária técnico, diária ajudante, custo/km, combustível, despesas extras, etc.)
+- **Persistência**: tabela `cost_parameters` no Supabase
+- **Impacto**: usado por todas as calculadoras de precificação
+
+### 5.8 Cadastro de Clientes (`/painel/provider/clientes`)
+- **Lista** de perfis com role = `client`
+- **Busca** por nome ou CPF
+- **Dados**: nome, email, CPF, telefone
+
+### 5.9 Portal do Cliente (`/painel/client`)
+- **Timeline**: etapas do projeto com progresso visual
+- **Documentos**: entregáveis pendentes e disponíveis para download
+- **Suporte**: link direto WhatsApp com Sócrates
+
+### 5.10 Administração de Licenças (`/painel/admin`)
+- **Acesso**: provedor raiz (sem `organization_id`)
+- **CRUD** de organizações: nome, slug, plano, limite de usuários, CNPJ, endereço, telefone
+- **Status**: ativa, suspensa, cancelada
+- **Gestão de membros**: lista, alterar role, remover
+- **Estatísticas**: total, ativas, suspensas
+
+---
+
+## 6. Hooks Customizados
+
+### `useAuth()`
+- Contexto React com `session`, `user`, `profile`, `isAdmin`, `organizationId`
+- `signIn`, `signUp`, `signOut`
+- `getSession()` inicial + `onAuthStateChange` subscription
+
+### `useProjects()`
+- Busca projetos com `project_stages`, `project_expenses`, `project_deliverables`
+- **Auto-inicialização**: se projeto não tem etapas, instancia do template
+- **Updates**: status, etapas, despesas, parâmetros de precificação
+- **Filtragem**: por `organization_id`
+
+### `useCostParameters()`
+- Busca `cost_parameters` da tabela Supabase
+- `getValue(id)`: retorna valor numérico
+- `updateParam(id, value)`: atualiza parâmetro
+- `getParamsByCategory(category)`: filtra por categoria
+
+### `useOrganizations()`
+- Busca todas as organizações com seus membros
+- `createOrganization`, `updateOrganization`, `deleteOrganization`
+- **Nested query**: busca membros + profiles relacionados
+
+### `useOrganizationMembers(organizationId)`
+- Busca membros de uma organização específica
+- `addMember`, `removeMember`, `updateMemberRole`
+
+---
+
+## 7. Supabase Edge Functions
+
+| Função | Descrição | Auth |
+|---|---|---|
+| `Password Hash Generator` | Gera hash bcrypt para seeding | — |
+| `Create Admin User` | Cria/Atualiza usuário admin via API | — |
+| `Fix User Password` | Atualiza senha via `listUsers` | — |
+| `Reset Admin User` | Deleta e recria usuário | — |
+| `Force Password Reset` | Força update/recreate com SDK | — |
+| `Generate Recovery Link` | Gera link de recuperação | — |
+
+---
+
+## 8. Modelo de Precificação
+
+Fórmula:
+```
+Custo Técnico = dias_campo × equipe × diária_técnico
+Custo Ajudante = dias_ajudante × diária_ajudante
+Custo Deslocamento = km × custo_km + dias_campo × despesa_extra
+Custo ART = taxa_art
+Custo Cartório = emolumentos
+Subtotal = Custo Técnico + Custo Ajudante + Custo Deslocamento + Custo ART + Custo Cartório
+Imposto = subtotal × taxa_imposto
+Custo Total = subtotal + imposto
+Preço Sugerido = custo_total × (1 + lucro_alvo)
+ROI = (preço - custo_total) / custo_total × 100
+```
+
+---
+
+## 9. Sistema de Etapas
+
+- Cada **template** define etapas com `weight`, `typicalDurationDays`, `estimatedCost`
+- Progresso real: `Σ (weight × 100%)` para etapas concluídas
+- Status Kanban: `prospeccao`, `analise`, `levantamento`, `execucao`, `finalizacao`, `concluido`
+- Ao mover no Kanban, o status da etapa é atualizado automaticamente
+
+---
+
+## 10. Design System
+
+- **Paleta**: background-50 (canvas), primary-500 (CTA), accent-500 (destaque), secondary-500 (suporte), foreground-950 (texto)
+- **Fontes**: `var(--font-heading)` (Playfair), `var(--font-body)` (Inter)
+- **Corner radius**: rounded-2xl (cards), rounded-xl (botões), rounded-full (pills)
+- **No shadow**, no blue/purple, no float
+- **Imagens**: Stable Diffusion com background consistente
+- **Responsive**: mobile-first hamburger, desktop nav, grid responsivo
+
+---
+
+## 11. SEO & Performance
+
+- **Title**: "Conceição da Barra Topografia | NorteGeo Engenharia"
+- **Meta tags**: local, geo.position, geo.placename, geo.region
+- **Schema.org**: FAQPage, LocalBusiness
+- **Lazy loading**: todas as rotas do painel são lazy-loaded
+- **Google Fonts**: Playfair Display, Inter, DM Sans
+
+---
+
+## 12. Requisitos Pendentes (Backlog)
+
+- [ ] Cadastro de clientes CRUD completo
+- [ ] Cadastro de equipe/prestadores
+- [ ] Notificações de prazo de etapa
+- [ ] Relatórios gerenciais consolidados
+- [ ] Criação de novo projeto a partir de template com seleção no modal
+- [ ] Upload real de arquivos (Supabase Storage)
+- [ ] Notificações de prazo (email/push)
+- [ ] Integração com WhatsApp API
+
+---
+
+## 13. Variáveis de Ambiente
+
+```
+VITE_PUBLIC_SUPABASE_URL=https://olrdyomhwiefrgwhnkom.supabase.co
+VITE_PUBLIC_SUPABASE_ANON_KEY=<anon_key>
+```
+
+---
+
+## 14. Stack Técnica
+
+- **Frontend**: React 19, Vite, TypeScript, TailwindCSS 3.4
+- **State**: React Context (useAuth), hooks customizados
+- **Drag & Drop**: @dnd-kit/core, @dnd-kit/sortable
+- **PDF**: jsPDF + jspdf-autotable
+- **Auth**: @supabase/supabase-js
+- **Icons**: Remix Icon (CDN), FontAwesome (CDN)
+- **I18n**: react-i18next
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Edge Functions**: Deno (esm.sh), REST API Supabase
+- **Deploy**: Readdy.ai

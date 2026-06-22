@@ -1,0 +1,10 @@
+node_modules
+out
+dist
+.env
+.env.*
+!.env.example
+*.local
+.DS_Store
+auto-imports.d.ts
+supabase/.temp/

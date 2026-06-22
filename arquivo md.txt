@@ -1,0 +1,72 @@
+# NorteGeo Engenharia e Topografia — Site One-Page Premium
+
+## 1. Descrição do Projeto
+Site institucional one-page de altíssima conversão e design editorial premium para a NorteGeo Engenharia e Topografia, empresa sediada em Braço do Rio, Conceição da Barra - ES. O site apresenta o ecossistema integrado de serviços (topografia de campo + regularização fundiária + despachante documental + suporte jurídico) com uma abordagem visual sofisticada que transmite autoridade e segurança.
+
+**Público-alvo:** Proprietários rurais e urbanos do Norte do ES com pendências documentais, necessidade de regularização de terras ou serviços de topografia.
+
+**Valor central:** A NorteGeo resolve de ponta a ponta — o cliente não precisa ir ao cartório, advogado e topógrafo separadamente.
+
+**Design:** Editorial premium com paleta de tons terrosos (creme/ivory, verde oliva profundo, terracota, espresso escuro). Tipografia Playfair Display + Inter. Layouts assimétricos e hierarquia visual marcante.
+
+## 2. Estrutura de Páginas
+- `/` — One-page completa com 10 seções
+
+## 3. Seções
+- [x] Hero — Full-bleed com imagem aérea de loteamento, tipografia dramática
+- [x] Problem/Agitação — "Burocracia Mata Terra" — dados de dor
+- [x] Stats Bar — Faixa escura com números de autoridade (500+ propriedades, 98% aprovação)
+- [x] Catálogo de Soluções — 3 serviços com imagens editoriais em layout alternado
+- [x] Processo Visual — Timeline de 5 etapas do campo ao cartório
+- [x] Depoimentos — 3 testemunhos com layout de cards e Google Reviews 5.0
+- [x] Autoridade — Perfil revista do diretor Sócrates Souza
+- [x] FAQ — 6 perguntas frequentes com accordion
+- [x] CTA Final — Faixa escura dramática com chamada para ação
+- [x] Formulário + Rodapé — Captura de leads e informações corporativas
+
+## 4. Funcionalidades Principais
+- [x] Navegação fixa com transformação por scroll
+- [x] Links diretos para WhatsApp (+55 27 99749-9587)
+- [x] Formulário de captura de leads (Readdy Forms)
+- [x] Accordion FAQ interativo
+- [x] SEO local otimizado (Conceição da Barra, Braço do Rio, Norte do ES)
+- [x] Animações CSS de entrada (fade up, slide)
+- [x] Google Fonts (Playfair Display, Inter, DM Sans)
+
+## 5. Integrações
+- **Formulário Readdy:** Captura de leads
+- **WhatsApp:** Links diretos para +55 27 99749-9587
+- Sem necessidade de Supabase, Shopify ou Stripe neste momento
+
+## 6. Design System
+- **Paleta**: Cream/Ivory (background), Olive/Sage (primary), Terracotta (accent), Espresso (secondary)
+- **Fontes**: Playfair Display (headings), Inter (body), DM Sans (labels)
+- **Estilo**: Editorial premium, minimalista, alta hierarquia tipográfica
+- **Imagens**: Stable Diffusion — aéreas, topografia, documentação, retratos
+
+## 7. Painel de Gestão Interna (NorteGeo App)
+- [x] Arquitetura lazy-loaded — rotas `/painel/*` carregadas sob demanda, zero impacto no site principal
+- [x] Login mock com dois papéis: Provider (Sócrates) e Client
+- [x] Kanban Board com 6 colunas e drag-and-drop (dnd-kit)
+- [x] Project Cards com progresso calculado a partir de etapas, ROI e custos em tempo real
+- [x] 5 templates de tipo de serviço com etapas, pesos e custos pré-cadastrados (Georreferenciamento INCRA, Desmembramento/Unificação, Regularização Fundiária, Levantamento Planialtimétrico, Retificação de Área)
+- [x] Sistema de etapas por projeto com peso %, datas previstas/realizadas e 4 status (pendente/andamento/concluída/bloqueada)
+- [x] Cronograma visual (Gantt horizontal) na tab Operações do modal com barra segmentada, lista detalhada expansível, edição de status
+- [x] Progresso calculado automaticamente = Σ (peso da etapa × % conclusão), zero número mágico
+- [x] Modal de Projeto com tabs: Cronograma & Operações (timeline, upload, notas) e Financeiro (previsto vs realizado, despesas com categoria "imprevisto")
+- [x] Motor de Precificação interativo com sliders e fórmulas exatas do modelo de negócio
+- [x] Portal do Cliente com timeline de status e central de downloads
+- [x] Geração de propostas PDF com histórico vinculado ao Kanban
+- [x] Botão de suporte direto (WhatsApp) no portal do cliente
+- [x] Autenticação real via Supabase (Passo 1)
+- [x] Migração de tabelas (Passo 2) — projects, project_expenses, project_deliverables, cost_parameters no Supabase com RLS
+- [x] Substituir mocks por hooks Supabase — projects, expenses, deliverables, cost_parameters
+- [x] Upload real de arquivos (Supabase Storage)
+- [x] Arquitetura Multi-Tenant — organizations, organization_members, organization_id em todas tabelas
+- [x] Painel Admin `/painel/admin` — CRUD de licenças/organizações, gestão de membros
+- [x] Separação total de dados por organização via RLS (Row Level Security)
+- [ ] Cadastro de clientes CRUD
+- [ ] Cadastro de equipe/prestadores
+- [ ] Notificações de prazo de etapa
+- [ ] Relatórios gerenciais consolidados
+- [ ] Criação de novo projeto a partir de template
