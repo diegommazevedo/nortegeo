@@ -155,7 +155,7 @@ export function FooterSection() {
             <img
               src={asset("assets/logo.png")}
               alt="NorteGeo"
-              className="h-12 w-auto rounded-lg bg-white px-2 py-1"
+              className="h-14 w-auto"
             />
             <p className="mt-6 max-w-sm text-sm leading-relaxed" style={{ fontFamily: F.body, color: "rgba(255,255,255,.55)" }}>
               Ecossistema integrado de topografia, regularização fundiária,

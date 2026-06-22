@@ -34,7 +34,7 @@ export default function Navbar() {
           <img
             src={asset("assets/logo.png")}
             alt="NorteGeo"
-            className="h-10 w-auto rounded-lg bg-white px-2 py-1"
+            className="h-11 w-auto"
           />
         </a>
 
